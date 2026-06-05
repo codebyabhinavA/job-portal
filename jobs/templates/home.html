@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Find Jobs{% endblock %}
+{% block content %}
+<div style="background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;padding:3rem 2rem;text-align:center">
+  <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:0.5rem">Find Your Dream Job</h1>
+  <p style="opacity:0.85;margin-bottom:2rem">Thousands of jobs from top companies</p>
+  <form method="GET" style="display:flex;gap:0.75rem;max-width:800px;margin:0 auto;flex-wrap:wrap;justify-content:center">
+    <input name="keyword" value="{{ keyword }}" placeholder="Job title or keyword..." style="flex:2;min-width:180px;padding:12px 16px;border-radius:8px;border:none;font-size:0.95rem;outline:none">
+    <input name="location" value="{{ location }}" placeholder="Location..." style="flex:1;min-width:140px;padding:12px 16px;border-radius:8px;border:none;font-size:0.95rem;outline:none">
+    <select name="job_type" style="flex:1;min-width:140px;padding:12px 16px;border-radius:8px;border:none;font-size:0.95rem;outline:none">
+      <option value="">All Types</option>
+      <option value="full-time" {% if job_type == 'full-time' %}selected{% endif %}>Full Time</option>
+      <option value="part-time" {% if job_type == 'part-time' %}selected{% endif %}>Part Time</option>
+      <option value="remote" {% if job_type == 'remote' %}selected{% endif %}>Remote</option>
+      <option value="internship" {% if job_type == 'internship' %}selected{% endif %}>Internship</option>
+    </select>
+    <button type="submit" class="btn btn-primary" style="padding:12px 28px;font-size:0.95rem">Search</button>
+  </form>
+</div>
+<div class="container">
+  <h2 style="font-size:1.1rem;font-weight:600;margin-bottom:1.5rem;color:var(--muted)">{{ jobs|length }} job{{ jobs|length|pluralize }} found</h2>
+  {% if jobs %}
+    <div style="display:grid;gap:1rem">
+      {% for job in jobs %}
+      <div class="card" style="display:flex;justify-content:space-between;align-items:start;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:6px;flex-wrap:wrap">
+            <h3 style="font-size:1.05rem;font-weight:600"><a href="{% url 'job_detail' job.pk %}" style="text-decoration:none;color:var(--text)">{{ job.title }}</a></h3>
+            <span class="badge badge-blue">{{ job.get_job_type_display }}</span>
+          </div>
+          <div style="font-size:0.85rem;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap">
+            <span>🏢 {{ job.employer.profile.company_name|default:job.employer.username }}</span>
+            <span>📍 {{ job.location }}</span>
+            {% if job.salary %}<span>💰 {{ job.salary }}</span>{% endif %}
+            <span>⏰ Deadline: {{ job.deadline }}</span>
+          </div>
+          <p style="margin-top:8px;font-size:0.875rem;color:var(--muted)">{{ job.description|truncatewords:20 }}</p>
+        </div>
+        <a href="{% url 'job_detail' job.pk %}" class="btn btn-primary btn-sm" style="white-space:nowrap">View Job</a>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="text-align:center;padding:4rem;color:var(--muted)">
+      <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
+      <p>No jobs found. Try different keywords.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

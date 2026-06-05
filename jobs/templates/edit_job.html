@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Edit Job{% endblock %}
+{% block content %}
+<div class="container" style="max-width:640px">
+  <div class="card" style="margin-top:1rem">
+    <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:1.5rem">Edit Job</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group"><label>Job Title</label><input type="text" name="title" value="{{ job.title }}" required></div>
+      <div class="form-group"><label>Description</label><textarea name="description" required>{{ job.description }}</textarea></div>
+      <div class="form-group"><label>Requirements</label><textarea name="requirements" required>{{ job.requirements }}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-group"><label>Location</label><input type="text" name="location" value="{{ job.location }}" required></div>
+        <div class="form-group"><label>Job Type</label>
+          <select name="job_type">
+            <option value="full-time" {% if job.job_type == 'full-time' %}selected{% endif %}>Full Time</option>
+            <option value="part-time" {% if job.job_type == 'part-time' %}selected{% endif %}>Part Time</option>
+            <option value="remote" {% if job.job_type == 'remote' %}selected{% endif %}>Remote</option>
+            <option value="internship" {% if job.job_type == 'internship' %}selected{% endif %}>Internship</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Salary</label><input type="text" name="salary" value="{{ job.salary }}"></div>
+        <div class="form-group"><label>Deadline</label><input type="date" name="deadline" value="{{ job.deadline }}" required></div>
+      </div>
+      <div style="display:flex;gap:0.75rem">
+        <button type="submit" class="btn btn-primary" style="flex:1;padding:12px">Save Changes</button>
+        <a href="{% url 'employer_dashboard' %}" class="btn btn-outline" style="padding:12px 20px">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

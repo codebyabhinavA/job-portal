@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="container" style="max-width:640px">
+  <div class="card" style="margin-top:1rem">
+    <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:1.5rem">My Profile</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-group"><label>First Name</label><input type="text" name="first_name" value="{{ user.first_name }}"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" name="last_name" value="{{ user.last_name }}"></div>
+        <div class="form-group"><label>Phone</label><input type="text" name="phone" value="{{ prof.phone }}"></div>
+        <div class="form-group"><label>Location</label><input type="text" name="location" value="{{ prof.location }}"></div>
+      </div>
+      <div class="form-group"><label>Bio</label><textarea name="bio">{{ prof.bio }}</textarea></div>
+      {% if prof.role == 'seeker' %}
+        <div class="form-group"><label>Skills</label><input type="text" name="skills" value="{{ prof.skills }}" placeholder="e.g. Python, Django, React"></div>
+      {% else %}
+        <div class="form-group"><label>Company Name</label><input type="text" name="company_name" value="{{ prof.company_name }}"></div>
+        <div class="form-group"><label>Website</label><input type="url" name="website" value="{{ prof.website }}"></div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary" style="width:100%;padding:12px">Save Profile</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

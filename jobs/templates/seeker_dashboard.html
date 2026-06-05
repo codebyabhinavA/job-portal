@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}My Applications{% endblock %}
+{% block content %}
+<div class="container">
+  <h1 style="font-size:1.5rem;font-weight:700;margin-bottom:1.5rem">My Applications</h1>
+  {% if applications %}
+    <div style="display:grid;gap:1rem">
+      {% for app in applications %}
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <div>
+          <h3 style="font-size:1rem;font-weight:600;margin-bottom:4px">{{ app.job.title }}</h3>
+          <p style="font-size:0.85rem;color:var(--muted)">{{ app.job.employer.profile.company_name|default:app.job.employer.username }} · {{ app.job.location }}</p>
+          <p style="font-size:0.8rem;color:var(--muted);margin-top:4px">Applied: {{ app.applied_at|date:"M d, Y" }}</p>
+        </div>
+        <span class="badge {% if app.status == 'accepted' %}badge-green{% elif app.status == 'rejected' %}badge-red{% elif app.status == 'reviewed' %}badge-blue{% else %}badge-gray{% endif %}">
+          {{ app.status|capfirst }}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="text-align:center;padding:4rem;color:var(--muted)">
+      <div style="font-size:3rem;margin-bottom:1rem">📋</div>
+      <p>No applications yet. <a href="{% url 'home' %}" style="color:var(--primary)">Browse jobs</a></p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

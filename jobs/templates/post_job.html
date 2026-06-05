@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Post a Job{% endblock %}
+{% block content %}
+<div class="container" style="max-width:640px">
+  <div class="card" style="margin-top:1rem">
+    <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:1.5rem">Post a New Job</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group"><label>Job Title</label><input type="text" name="title" required placeholder="e.g. Frontend Developer"></div>
+      <div class="form-group"><label>Description</label><textarea name="description" required placeholder="Describe the role and responsibilities..."></textarea></div>
+      <div class="form-group"><label>Requirements</label><textarea name="requirements" required placeholder="List required skills and qualifications..."></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-group"><label>Location</label><input type="text" name="location" required placeholder="e.g. Bangalore, Remote"></div>
+        <div class="form-group"><label>Job Type</label>
+          <select name="job_type">
+            <option value="full-time">Full Time</option>
+            <option value="part-time">Part Time</option>
+            <option value="remote">Remote</option>
+            <option value="internship">Internship</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Salary (optional)</label><input type="text" name="salary" placeholder="e.g. ₹5-8 LPA"></div>
+        <div class="form-group"><label>Application Deadline</label><input type="date" name="deadline" required></div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;padding:12px">Post Job</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
